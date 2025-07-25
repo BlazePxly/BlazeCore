@@ -1,0 +1,4 @@
+org\blazepxly\blazeCore\command\mainCommandTab.class
+org\blazepxly\blazeCore\command\mainCommand.class
+org\blazepxly\blazeCore\BlazeCore.class
+org\blazepxly\blazeCore\command\mainCommand$Utils.class

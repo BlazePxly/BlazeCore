@@ -1,0 +1,11 @@
+name: BlazeCore
+version: '1.0'
+main: org.blazepxly.blazeCore.BlazeCore
+api-version: '1.21'
+authors: [ BlazePxly ]
+description: BlazeCore plugin
+commands:
+  blazecore:
+    description: Main Command for BlazeCore
+    usage: /<command> [subcommand]
+    aliases: [bc]

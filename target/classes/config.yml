@@ -1,0 +1,17 @@
+# ========================================= #
+#          Message Configuration            #
+# ========================================= #
+#
+#
+messages:
+  no-permission: "&cYou don't have the permission to execute this command."
+  reloaded-config: "&aConfig has been reloaded."
+  players-check: "&cOnly players can execute this command."
+  healed-self: "&aYou healed yourself."
+  healedbyother-player: "&6%healer% healed you."
+  target-not-online: "%target% is not online."
+  ping:
+    low-ping: "&aPERFECT! %player% ping is %ping%"
+    medium-ping: "&eCAREFUL! %player% Your ping is %ping%"
+    high-ping: "&cLAG! %player% Your ping is %ping%"
+  playtime: "&aYour playtime is: %days% day, %hours% hours, %minutes% minutes."
