@@ -30,7 +30,6 @@ public class mainCommand implements CommandExecutor {
         String ReloadMessage = plugin.getConfig().getString("messages.reloaded-config");
         String PlayersCheckMessage = plugin.getConfig().getString("messages.players-check");
         String HealSelfMessage = plugin.getConfig().getString("messages.healed-self");
-        String TargetNotOnline = plugin.getConfig().getString("messages.target-not-online").replace("%target%", args[1]);
 
         if (!(sender instanceof Player)) {
             sender.sendMessage(Utils.color(PlayersCheckMessage));
@@ -61,26 +60,23 @@ public class mainCommand implements CommandExecutor {
                 return true;
 
             case "heal":
+
                 if (!sender.hasPermission("blazecore.admin")) {
                     sender.sendMessage(Utils.color(NoPermissionMessage));
                     return true;
                 }
-
-                if (args.length == 1) {
-
                     double MaxHealth = player.getAttribute(Attribute.MAX_HEALTH).getValue();
                     player.setHealth(MaxHealth);
                     player.setFoodLevel(20);
                     player.sendMessage(Utils.color(HealSelfMessage));
-                }
 
                 if (args.length == 2) {
+                    String TargetNotOnline = plugin.getConfig().getString("messages.target-not-online").replace("%target%", args[1]);
                     Player playerheal = Bukkit.getPlayer(args[1]);
                     Player senderPlayer = (Player) sender;
                     String HealedbyOtherMessage = plugin.getConfig().getString("messages.healedbyother-player").replace("%healer%", senderPlayer.getName());
 
                     if (playerheal != null) {
-                        double MaxHealth = playerheal.getAttribute(Attribute.MAX_HEALTH).getValue();
                         playerheal.setHealth(MaxHealth);
                         playerheal.setFoodLevel(20);
                         playerheal.sendMessage(Utils.color(HealedbyOtherMessage));
@@ -89,50 +85,50 @@ public class mainCommand implements CommandExecutor {
                     }
                     return true;
                 }
+                return true;
 
             case "ping":
                 int ping = player.getPing();
+                String LowPingMessage = plugin.getConfig().getString("messages.ping.low-ping").replace("%ping%", String.valueOf(ping))
+                        .replace("%player%", player.getName());
+                String MediumPingMessage = plugin.getConfig().getString("messages.ping.medium-ping").replace("%ping%", String.valueOf(ping))
+                        .replace("%player%", player.getName());
+                String HighPingMessage = plugin.getConfig().getString("messages.ping.high-ping").replace("%ping%", String.valueOf(ping))
+                        .replace("%player%", player.getName());
 
-                if (args.length == 1){
-                    String LowPingMessage = plugin.getConfig().getString("messages.ping.low-ping").replace("%ping%", String.valueOf(ping))
-                            .replace("%player%", player.getName());
-                    String MediumPingMessage = plugin.getConfig().getString("messages.ping.medium-ping").replace("%ping%", String.valueOf(ping))
-                            .replace("%player%", player.getName());;
-                    String HighPingMessage = plugin.getConfig().getString("messages.ping.high-ping").replace("%ping%", String.valueOf(ping))
-                            .replace("%player%", player.getName());;
+                if (ping >= 0 && ping <= 30){
+                    player.sendMessage(Utils.color(LowPingMessage));
+                } else if (ping >= 31 && ping <= 120){
+                    player.sendMessage(Utils.color(MediumPingMessage));
+                } else if (ping >= 121){
+                    player.sendMessage(Utils.color(HighPingMessage));
+                }
 
-                    if (ping >= 0 && ping <= 30){
-                        player.sendMessage(Utils.color(LowPingMessage));
-                    } else if (ping >= 31 && ping <= 120){
-                        player.sendMessage(Utils.color(MediumPingMessage));
-                    } else if (ping >= 121){
-                        player.sendMessage(Utils.color(HighPingMessage));
-                    }
-                    return true;
-                } else if (args.length == 2){
+                if (args.length == 2){
+                    String TargetNotOnline = plugin.getConfig().getString("messages.target-not-online").replace("%target%", args[1]);
                     Player PlayerPing = Bukkit.getPlayer(args[1]);
-
                     if (PlayerPing != null){
                         int OtherPlayerPing = PlayerPing.getPing();
 
-                        String LowPingMessage = plugin.getConfig().getString("messages.ping.low-ping").replace("%ping%", String.valueOf(OtherPlayerPing))
+                        String LowPingMessageother = plugin.getConfig().getString("messages.ping.low-ping").replace("%ping%", String.valueOf(OtherPlayerPing))
                                 .replace("%player%", player.getName());
-                        String MediumPingMessage = plugin.getConfig().getString("messages.ping.medium-ping").replace("%ping%", String.valueOf(OtherPlayerPing))
-                                .replace("%player%", player.getName());;
-                        String HighPingMessage = plugin.getConfig().getString("messages.ping.high-ping").replace("%ping%", String.valueOf(OtherPlayerPing))
-                                .replace("%player%", player.getName());;
+                        String MediumPingMessageother = plugin.getConfig().getString("messages.ping.medium-ping").replace("%ping%", String.valueOf(OtherPlayerPing))
+                                .replace("%player%", player.getName());
+                        String HighPingMessageother = plugin.getConfig().getString("messages.ping.high-ping").replace("%ping%", String.valueOf(OtherPlayerPing))
+                                .replace("%player%", player.getName());
 
                         if (OtherPlayerPing >= 0 && OtherPlayerPing <= 30){
-                            player.sendMessage(Utils.color(LowPingMessage));
+                            player.sendMessage(Utils.color(LowPingMessageother));
                         } else if (OtherPlayerPing >= 31 && OtherPlayerPing <= 120){
-                            player.sendMessage(Utils.color(MediumPingMessage));
+                            player.sendMessage(Utils.color(MediumPingMessageother));
                         } else if (OtherPlayerPing >= 121){
-                            player.sendMessage(Utils.color(HighPingMessage));
+                            player.sendMessage(Utils.color(HighPingMessageother));
                         }
                     } else {
                         sender.sendMessage(Utils.color(TargetNotOnline));
                     }
                 }
+                return true;
 
             case "playtime":
                 int ticks = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
